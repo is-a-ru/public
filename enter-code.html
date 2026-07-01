@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Введите код</title>
+</head>
+<body>
+    <h2>Введите код</h2>
+
+    <input type="password" id="codeInput">
+    <button onclick="checkCode()">Войти</button>
+
+    <script>
+        const CORRECT_CODE = "68237";
+        const REDIRECT_URL = "https://example.com";
+
+        // Проверяем cookie при загрузке страницы
+        window.onload = function() {
+            if (document.cookie.includes("authorized=true")) {
+                window.location.href = REDIRECT_URL;
+            }
+        };
+
+        function checkCode() {
+            const code = document.getElementById("codeInput").value;
+
+            if (code === CORRECT_CODE) {
+                // Cookie на 10 лет
+                const expires = new Date();
+                expires.setFullYear(expires.getFullYear() + 10);
+
+                document.cookie =
+                    `authorized=true; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
+
+                window.location.href = REDIRECT_URL;
+            } else {
+                alert("Неверный код");
+            }
+        }
+    </script>
+</body>
+</html>
